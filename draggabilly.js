@@ -142,7 +142,7 @@ proto._create = function() {
 
   this.enable();
   this.setHandles();
-
+  this.setExcluded();
 };
 
 /**
@@ -153,6 +153,32 @@ proto.setHandles = function() {
     this.element.querySelectorAll( this.options.handle ) : [ this.element ];
 
   this.bindHandles();
+};
+    
+/**
+ * set this.excluded
+ */
+proto.setExcluded = function() {
+    var _this = this;
+    if (this.options.excluded) {
+        if (this.options.excluded instanceof String || typeof this.options.excluded === "string") {
+            this.exluded = this.element.querySelectorAll(this.options.excluded);
+        } else if (Array.isArray(this.options.excluded)) {
+            this.excluded = [];
+            this.options.exluded.forEach(function(el) {
+                _this.excluded.push(getElement(el));
+            });
+        } else {
+            this.exluded = [this.options.excluded];
+        }
+    }
+    
+    function getElement(el) {
+      if (el instanceof String || typeof el === "string") {
+          return _this.element.querySelector(el);
+      }
+      return el;
+    }
 };
 
 /**
@@ -268,6 +294,9 @@ proto.pointerMove = function( event, pointer ) {
 proto.dragStart = function( event, pointer ) {
   if ( !this.isEnabled ) {
     return;
+  }
+  if (this.exluded && this.excluded.indexOf(event.currentTarget) >= 0) {
+      return;
   }
   this._getPosition();
   this.measureContainment();
