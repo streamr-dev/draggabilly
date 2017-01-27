@@ -7,20 +7,19 @@
 
 /**
  * Bridget makes jQuery widgets
- * v2.0.0
+ * v2.0.1
  * MIT license
  */
 
 /* jshint browser: true, strict: true, undef: true, unused: true */
 
 ( function( window, factory ) {
-  
-  /* globals define: false, module: false, require: false */
-
+  // universal module definition
+  /*jshint strict: false */ /* globals define, module, require */
   if ( typeof define == 'function' && define.amd ) {
     // AMD
     define( 'jquery-bridget/jquery-bridget',[ 'jquery' ], function( jQuery ) {
-      factory( window, jQuery );
+      return factory( window, jQuery );
     });
   } else if ( typeof module == 'object' && module.exports ) {
     // CommonJS
@@ -37,7 +36,7 @@
   }
 
 }( window, function factory( window, jQuery ) {
-
+'use strict';
 
 // ----- utils ----- //
 
@@ -160,7 +159,7 @@ return jQueryBridget;
 /*global define: false, module: false, console: false */
 
 ( function( window, factory ) {
-  
+  'use strict';
 
   if ( typeof define == 'function' && define.amd ) {
     // AMD
@@ -176,7 +175,7 @@ return jQueryBridget;
   }
 
 })( window, function factory() {
-
+'use strict';
 
 // -------------------------- helpers -------------------------- //
 
@@ -1285,6 +1284,12 @@ proto._addTransformPosition = function( style ) {
 
 // -------------------------- events -------------------------- //
 
+// preventDefault if enabled and not a <select>. #141
+proto.canPreventDefaultOnPointerDown = function( event ) {
+  // prevent default, unless touchstart or <select>
+  return this.isEnabled && event.target.nodeName != 'SELECT';
+};
+
 /**
  * pointer start
  * @param {Event} event
@@ -1425,6 +1430,17 @@ proto.containDrag = function( axis, drag, grid ) {
   var min = applyGrid( -rel, grid, 'ceil' );
   var max = this.containSize[ measure ];
   max = applyGrid( max, grid, 'floor' );
+    
+  if (this.options.ignoreContainmentDirection) {
+    if (measure === 'width' && this.options.ignoreContainmentDirection.left ||
+      measure == 'height' && this.options.ignoreContainmentDirection.top) {
+      min = -Infinity;
+    }
+    if (measure === 'width' && this.options.ignoreContainmentDirection.right ||
+      measure == 'height' && this.options.ignoreContainmentDirection.bottom) {
+      max = Infinity;
+    }
+  }
   return  Math.min( max, Math.max( min, drag ) );
 };
 

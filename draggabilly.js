@@ -370,6 +370,17 @@ proto.containDrag = function( axis, drag, grid ) {
   var min = applyGrid( -rel, grid, 'ceil' );
   var max = this.containSize[ measure ];
   max = applyGrid( max, grid, 'floor' );
+    
+  if (this.options.ignoreContainmentDirection) {
+    if (measure === 'width' && this.options.ignoreContainmentDirection.left ||
+      measure == 'height' && this.options.ignoreContainmentDirection.top) {
+      min = -Infinity;
+    }
+    if (measure === 'width' && this.options.ignoreContainmentDirection.right ||
+      measure == 'height' && this.options.ignoreContainmentDirection.bottom) {
+      max = Infinity;
+    }
+  }
   return  Math.min( max, Math.max( min, drag ) );
 };
 
