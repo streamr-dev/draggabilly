@@ -162,14 +162,14 @@
         var _this = this;
         if (this.options.exclude) {
             if (this.options.exclude instanceof String || typeof this.options.exclude === "string") {
-                this.exlude = this.element.querySelectorAll(this.options.exclude);
+                this.exclude = this.element.querySelectorAll(this.options.exclude);
             } else if (Array.isArray(this.options.exclude)) {
                 this.exclude = [];
-                this.options.exluded.forEach(function(el) {
+                this.options.exclude.forEach(function(el) {
                     _this.exclude.push(getElement(el));
                 });
             } else {
-                this.exluded = [this.options.exclude];
+                this.exclude = [this.options.exclude];
             }
         }
         
@@ -295,7 +295,7 @@
         if ( !this.isEnabled ) {
             return;
         }
-        if (this.exluded && this.exclude.indexOf(event.currentTarget) >= 0) {
+        if (this.exclude && this.exclude.indexOf(event.currentTarget) >= 0) {
             return;
         }
         this._getPosition();
