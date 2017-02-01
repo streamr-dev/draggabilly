@@ -235,7 +235,7 @@
      * @param {Event or Touch} pointer
      */
     proto.pointerDown = function( event, pointer ) {
-        if (this.options.exclude && selectorMatches(event.target, this.options.exclude)) {
+        if (this.options.exclude && event.target && (selectorMatches(event.target, this.options.exclude) || event.target.closest(this.options.exclude))) {
             this._pointerDone();
             return;
         }
