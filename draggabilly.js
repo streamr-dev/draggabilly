@@ -268,7 +268,7 @@
         if ( !this.isEnabled ) {
             return;
         }
-        var matchesFunction = event.target.matches || event.currentTarget.matchesSelector;
+        var matchesFunction = event.target.matches || event.target.matchesSelector;
         if (matchesFunction(this.options.exclude)) {
             return;
         }
@@ -332,7 +332,7 @@
         if ( !this.isEnabled ) {
             return;
         }
-        var matchesFunction = event.target.matches || event.currentTarget.matchesSelector;
+        var matchesFunction = event.target.matches || event.target.matchesSelector;
         if (matchesFunction(this.options.exclude)) {
             return;
         }
@@ -413,7 +413,7 @@
         if ( !this.isEnabled ) {
             return;
         }
-        var matchesFunction = event.target.matches || event.currentTarget.matchesSelector;
+        var matchesFunction = event.target.matches || event.target.matchesSelector;
         if (matchesFunction(this.options.exclude)) {
             return;
         }
