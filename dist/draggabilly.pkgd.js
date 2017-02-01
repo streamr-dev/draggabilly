@@ -1295,7 +1295,7 @@ return Unidragger;
      * @param {Event or Touch} pointer
      */
     proto.pointerDown = function( event, pointer ) {
-        if (this.options.exclude && selectorMatches(event.target), this.options.exclude) {
+        if (this.options.exclude && selectorMatches(event.target, this.options.exclude)) {
             return;
         }
         this._dragPointerDown( event, pointer );
