@@ -142,7 +142,6 @@
         
         this.enable();
         this.setHandles();
-        this.setExclude();
     };
     
     /**
@@ -153,32 +152,6 @@
             this.element.querySelectorAll( this.options.handle ) : [ this.element ];
         
         this.bindHandles();
-    };
-    
-    /**
-     * set this.exclude
-     */
-    proto.setExclude = function() {
-        var _this = this;
-        if (this.options.exclude) {
-            if (this.options.exclude instanceof String || typeof this.options.exclude === "string") {
-                this.exclude = this.element.querySelectorAll(this.options.exclude);
-            } else if (Array.isArray(this.options.exclude)) {
-                this.exclude = [];
-                this.options.exclude.forEach(function(el) {
-                    _this.exclude.push(getElement(el));
-                });
-            } else {
-                this.exclude = [this.options.exclude];
-            }
-        }
-        
-        function getElement(el) {
-            if (el instanceof String || typeof el === "string") {
-                return _this.element.querySelector(el);
-            }
-            return el;
-        }
     };
     
     /**
@@ -295,7 +268,8 @@
         if ( !this.isEnabled ) {
             return;
         }
-        if (this.exclude && this.exclude.indexOf(event.currentTarget) >= 0) {
+        if ((event.currentTarget.matches && event.currentTarget.matches(this.options.exclude) ||
+            event.currentTarget.matchesSelector && event.currentTarget.matchesSelector(this.options.exclude))) {
             return;
         }
         this._getPosition();
