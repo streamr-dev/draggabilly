@@ -268,8 +268,8 @@
         if ( !this.isEnabled ) {
             return;
         }
-        if ((event.currentTarget.matches && event.currentTarget.matches(this.options.exclude) ||
-            event.currentTarget.matchesSelector && event.currentTarget.matchesSelector(this.options.exclude))) {
+        var matchesFunction = event.target.matches || event.currentTarget.matchesSelector;
+        if (matchesFunction(this.options.exclude)) {
             return;
         }
         this._getPosition();
@@ -330,6 +330,10 @@
      */
     proto.dragMove = function( event, pointer, moveVector ) {
         if ( !this.isEnabled ) {
+            return;
+        }
+        var matchesFunction = event.target.matches || event.currentTarget.matchesSelector;
+        if (matchesFunction(this.options.exclude)) {
             return;
         }
         var dragX = moveVector.x;
@@ -407,6 +411,10 @@
      */
     proto.dragEnd = function( event, pointer ) {
         if ( !this.isEnabled ) {
+            return;
+        }
+        var matchesFunction = event.target.matches || event.currentTarget.matchesSelector;
+        if (matchesFunction(this.options.exclude)) {
             return;
         }
         // use top left position when complete
