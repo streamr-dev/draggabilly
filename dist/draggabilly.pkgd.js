@@ -1286,8 +1286,7 @@ return Unidragger;
 // preventDefault if enabled and not a <select>. #141
     proto.canPreventDefaultOnPointerDown = function( event ) {
         // prevent default, unless touchstart or <select>
-        return this.isEnabled && event.target.nodeName != 'SELECT' && (event.target.matches && !event.target.matches(this.options.exclude)) ||
-            (event.target.matchesSelector && !event.target.matchesSelector(this.options.exclude));
+        return this.isEnabled && event.target.nodeName != 'SELECT';
     };
     
     /**
@@ -1296,6 +1295,9 @@ return Unidragger;
      * @param {Event or Touch} pointer
      */
     proto.pointerDown = function( event, pointer ) {
+        if (this.options.exclude && selectorMatches(event.target), this.options.exclude) {
+            return;
+        }
         this._dragPointerDown( event, pointer );
         // kludge to blur focused inputs in dragger
         var focused = document.activeElement;
@@ -1327,10 +1329,6 @@ return Unidragger;
      */
     proto.dragStart = function( event, pointer ) {
         if ( !this.isEnabled ) {
-            return;
-        }
-        if (event.target.matches && event.target.matches(this.options.exclude) ||
-            event.target.matchesSelector && event.target.matchesSelector(this.options.exclude)) {
             return;
         }
         this._getPosition();
@@ -1391,10 +1389,6 @@ return Unidragger;
      */
     proto.dragMove = function( event, pointer, moveVector ) {
         if ( !this.isEnabled ) {
-            return;
-        }
-        if (event.target.matches && event.target.matches(this.options.exclude) ||
-            event.target.matchesSelector && event.target.matchesSelector(this.options.exclude)) {
             return;
         }
         var dragX = moveVector.x;
@@ -1472,10 +1466,6 @@ return Unidragger;
      */
     proto.dragEnd = function( event, pointer ) {
         if ( !this.isEnabled ) {
-            return;
-        }
-        if (event.target.matches && event.target.matches(this.options.exclude) ||
-            event.target.matchesSelector && event.target.matchesSelector(this.options.exclude)) {
             return;
         }
         // use top left position when complete
@@ -1556,6 +1546,17 @@ return Unidragger;
     
     if ( jQuery && jQuery.bridget ) {
         jQuery.bridget( 'draggabilly', Draggabilly );
+    }
+
+// -----  ----- //
+    
+// ----- Workaround to use the same element.matches in (near) all browser ----- //
+    function selectorMatches(el, selector) {
+        var p = Element.prototype;
+        var f = p.matches || p.webkitMatchesSelector || p.mozMatchesSelector || p.msMatchesSelector || function(s) {
+                return [].indexOf.call(document.querySelectorAll(s), this) !== -1;
+            };
+        return f.call(el, selector);
     }
 
 // -----  ----- //
