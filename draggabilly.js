@@ -236,6 +236,7 @@
      */
     proto.pointerDown = function( event, pointer ) {
         if (this.options.exclude && selectorMatches(event.target, this.options.exclude)) {
+            this._pointerDone();
             return;
         }
         this._dragPointerDown( event, pointer );
