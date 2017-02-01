@@ -1328,8 +1328,8 @@ return Unidragger;
         if ( !this.isEnabled ) {
             return;
         }
-        var matchesFunction = event.target.matches || event.target.matchesSelector;
-        if (matchesFunction(this.options.exclude)) {
+        if (event.target.matches && event.target.matches(this.options.exclude) ||
+            event.target.matchesSelector && event.target.matchesSelector(this.options.exclude)) {
             return;
         }
         this._getPosition();
@@ -1392,8 +1392,8 @@ return Unidragger;
         if ( !this.isEnabled ) {
             return;
         }
-        var matchesFunction = event.target.matches || event.target.matchesSelector;
-        if (matchesFunction(this.options.exclude)) {
+        if (event.target.matches && event.target.matches(this.options.exclude) ||
+            event.target.matchesSelector && event.target.matchesSelector(this.options.exclude)) {
             return;
         }
         var dragX = moveVector.x;
@@ -1473,8 +1473,8 @@ return Unidragger;
         if ( !this.isEnabled ) {
             return;
         }
-        var matchesFunction = event.target.matches || event.target.matchesSelector;
-        if (matchesFunction(this.options.exclude)) {
+        if (event.target.matches && event.target.matches(this.options.exclude) ||
+            event.target.matchesSelector && event.target.matchesSelector(this.options.exclude)) {
             return;
         }
         // use top left position when complete
