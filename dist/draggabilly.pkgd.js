@@ -1286,8 +1286,8 @@ return Unidragger;
 // preventDefault if enabled and not a <select>. #141
     proto.canPreventDefaultOnPointerDown = function( event ) {
         // prevent default, unless touchstart or <select>
-        return (this.isEnabled && event.target.nodeName != 'SELECT') || (event.target.matches && event.target.matches(this.options.exclude)) ||
-            (event.target.matchesSelector && event.target.matchesSelector(this.options.exclude));
+        return (this.isEnabled && event.target.nodeName != 'SELECT') || (event.target.matches && !event.target.matches(this.options.exclude)) ||
+            (event.target.matchesSelector && !event.target.matchesSelector(this.options.exclude));
     };
     
     /**
@@ -1327,6 +1327,10 @@ return Unidragger;
      */
     proto.dragStart = function( event, pointer ) {
         if ( !this.isEnabled ) {
+            return;
+        }
+        if (event.target.matches && event.target.matches(this.options.exclude) ||
+            event.target.matchesSelector && event.target.matchesSelector(this.options.exclude)) {
             return;
         }
         this._getPosition();
@@ -1387,6 +1391,10 @@ return Unidragger;
      */
     proto.dragMove = function( event, pointer, moveVector ) {
         if ( !this.isEnabled ) {
+            return;
+        }
+        if (event.target.matches && event.target.matches(this.options.exclude) ||
+            event.target.matchesSelector && event.target.matchesSelector(this.options.exclude)) {
             return;
         }
         var dragX = moveVector.x;
