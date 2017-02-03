@@ -1168,11 +1168,11 @@ return Unidragger;
     Draggabilly.defaults = {
     };
     
-    Draggabilly.zoom = 1;
+    Draggabilly._scale = 1;
     
     Draggabilly.setZoom = function(zoom) {
         if ((typeof zoom === "number" || zoom instanceof Number) && zoom <= 10 && zoom >= 0.1) {
-            Draggabilly.zoom = zoom;
+            Draggabilly._scale = 1 / zoom;
         }
     };
     
@@ -1410,8 +1410,8 @@ return Unidragger;
         dragX = applyGrid( dragX, gridX );
         dragY = applyGrid( dragY, gridY );
         
-        dragX *= Draggabilly.zoom;
-        dragY *= Draggabilly.zoom;
+        dragX *= Draggabilly._scale;
+        dragY *= Draggabilly._scale;
         
         dragX = this.containDrag( 'x', dragX, gridX );
         dragY = this.containDrag( 'y', dragY, gridY );
