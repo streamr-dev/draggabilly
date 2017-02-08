@@ -350,11 +350,11 @@
         dragX = applyGrid( dragX, gridX );
         dragY = applyGrid( dragY, gridY );
         
-        dragX *= Draggabilly._scale;
-        dragY *= Draggabilly._scale;
-        
         dragX = this.containDrag( 'x', dragX, gridX );
         dragY = this.containDrag( 'y', dragY, gridY );
+    
+        dragX *= Draggabilly._scale;
+        dragY *= Draggabilly._scale;
         
         // constrain to axis
         dragX = this.options.axis == 'y' ? 0 : dragX;
